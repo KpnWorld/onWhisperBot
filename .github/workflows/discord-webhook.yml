@@ -1,0 +1,17 @@
+name: Discord Webhook
+
+on:
+  push:
+    branches:
+      - main  # Change this to your branch
+
+jobs:
+  send-discord-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{"content": "**New update pushed to GitHub!** 🚀\nCommit: '${{ github.event.head_commit.message }}'\nBy: '${{ github.event.pusher.name }}'"}' \
+          YOUR_DISCORD_WEBHOOK_URL
