@@ -1,17 +1,27 @@
-name: Discord Webhook
+name: Build and Deploy
 
-on:
-  push:
-    branches:
-      - main  # Change this to your branch
+on: [push]
 
 jobs:
-  send-discord-message:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Send message to Discord
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Create virtual environment
+        run: python -m venv venv
+
+      - name: Install dependencies (if file exists)
         run: |
-          curl -H "Content-Type: application/json" \
-          -X POST \
-          -d '{"content": "**New update pushed to GitHub!** 🚀\nCommit: '${{ github.event.head_commit.message }}'\nBy: '${{ github.event.pusher.name }}'"}' \
-          https://discord.com/api/webhooks/1340050981718851645/htNTE-cOmelwfm__4iurxKnu3UtgB7Zt5pSIdyfPWSLCEAq6U9ZZ4ZG878tQ28GwB1Bi
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt found, skipping dependency installation."
+          fi
