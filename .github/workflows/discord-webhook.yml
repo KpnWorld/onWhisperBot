@@ -14,4 +14,4 @@ jobs:
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{"content": "**New update pushed to GitHub!** 🚀\nCommit: '${{ github.event.head_commit.message }}'\nBy: '${{ github.event.pusher.name }}'"}' \
-          YOUR_DISCORD_WEBHOOK_URL
+          https://discord.com/api/webhooks/1340050981718851645/htNTE-cOmelwfm__4iurxKnu3UtgB7Zt5pSIdyfPWSLCEAq6U9ZZ4ZG878tQ28GwB1Bi
