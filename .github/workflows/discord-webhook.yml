@@ -1,27 +1,25 @@
-name: Build and Deploy
+name: GitHub to Discord Webhook
 
-on: [push]
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to monitor
 
 jobs:
-  build:
+  discord_notification:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Create virtual environment
-        run: python -m venv venv
-
-      - name: Install dependencies (if file exists)
+      - name: Send Webhook to Discord
         run: |
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            echo "No requirements.txt found, skipping dependency installation."
-          fi
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{
+            "username": "OnWhisper Bot",
+            "avatar_url": "https://your-image-url.com/logo.png",
+            "embeds": [{
+              "title": "🚀 New Push to OnWhisper!",
+              "description": "**Commit:** `${{ github.event.head_commit.message }}`\n[View Commit](${{ github.event.head_commit.url }})",
+              "color": 5814783
+            }]
+          }' \
+          "https://discord.com/api/webhooks/1340050981718851645/htNTE-cOmelwfm__4iurxKnu3UtgB7Zt5pSIdyfPWSLCEAq6U9ZZ4ZG878tQ28GwB1Bi"
